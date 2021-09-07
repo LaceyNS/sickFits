@@ -1,9 +1,8 @@
-import Page from "../components/Page";
-
 export default function AccountPage() {
   return (
-    <Page>
+    <>
       <p>Hello!</p>
-    </Pa>
+      <p>I am the account page</p>
+    </>
   );
 }
