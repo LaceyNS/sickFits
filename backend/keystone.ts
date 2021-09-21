@@ -28,6 +28,6 @@ export default config({
   ui: {
     // TO DO: change this for roles
     isAccessAllowed: () => true,
-    // TO DO: add session values here
   },
+  // TO DO: add session values here
 });
