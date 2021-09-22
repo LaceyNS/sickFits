@@ -1,4 +1,5 @@
 import { config, createSchema } from '@keystone-next/keystone/schema';
+import { User } from './schemas/User';
 import 'dotenv/config';
 
 const databaseURL =
@@ -8,6 +9,8 @@ const sessionConfig = {
   maxAge: 60 * 60 * 24 * 30, // How long should they stay signed in. seconds, minutes, hours, days
   secret: process.env.COOKIE_SECRET,
 };
+
+const { withAuth } = createAuth;
 
 export default config({
   // @ts-ignore
@@ -24,6 +27,7 @@ export default config({
   },
   lists: createSchema({
     // Scheme items go in here
+    User,
   }),
   ui: {
     // TO DO: change this for roles
