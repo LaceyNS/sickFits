@@ -1,6 +1,11 @@
 import { config, createSchema } from '@keystone-next/keystone/schema';
 import { createAuth } from '@keystone-next/auth';
+import {
+  withItemData,
+  statelessSessions,
+} from '@keystone-next/keystone/session';
 import { User } from './schemas/User';
+import { Product } from './schemas/Product';
 import 'dotenv/config';
 
 const databaseURL =
@@ -38,11 +43,15 @@ export default withAuth(
     lists: createSchema({
       // Scheme items go in here
       User,
+      Product,
     }),
     ui: {
-      // TO DO: change this for roles
-      isAccessAllowed: () => true,
+      // Show the ui only for people who pass this test
+      isAccessAllowed: ({ session }) => !!session?.data,
     },
-    // TO DO: add session values here
+    session: withItemData(statelessSessions(sessionConfig), {
+      // GraphQL query
+      User: 'id name email',
+    }),
   })
 );
