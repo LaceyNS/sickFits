@@ -60,6 +60,6 @@ export default function Page({ children }) {
   );
 }
 
-Page.PropTypes = {
+Page.propTypes = {
   children: PropTypes.any,
 };
