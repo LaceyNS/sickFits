@@ -21,11 +21,24 @@ export default function useForm(initial = {}) {
     });
   }
 
-  
+  // to return form to initial state
+  function resetForm() {
+    setInputs(initial);
+  }
+
+  // to empty out all the inputs
+  function clearForm() {
+    const blankState = Object.fromEntries(
+      Object.entries(inputs).map(([key, value]) => [key, ''])
+    );
+    setInputs(blankState);
+  }
 
   // return the things we want to surface from this custom hook
   return {
     inputs,
     handleChange,
+    resetForm,
+    clearForm,
   };
 }
