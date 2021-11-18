@@ -1,4 +1,6 @@
+import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
+import DisplayError from './ErrorMessage';
 import useForm from '../lib/useForm';
 import Form from './styles/Form.js';
 
@@ -34,14 +36,25 @@ export default function CreateProduct() {
     price: 32345,
     description: 'These are the best shoes out there.',
   });
+  const [createProduct, { loading, error, data }] = useMutation(
+    CREATE_PRODUCT_MUTATION,
+    {
+      variables: inputs,
+    }
+  );
+  console.log(createProduct);
   return (
     <Form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         console.log(inputs);
+        // Submit the input fields to the backend
+        const res = await createProduct();
+        console.log(res);
       }}
     >
-      <fieldset>
+      <DisplayError error={error} />
+      <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="image">
           Image
           <input
