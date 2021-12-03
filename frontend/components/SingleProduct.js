@@ -14,5 +14,10 @@ const SINGLE_ITEM_QUERY = gql`
 export default function SingleProduct({ id }) {
   const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY);
   if (loading) return <p>Loading...</p>;
-  return <p>Single Product</p>;
+  if (error) return <DisplayError error={error} />;
+  return (
+    <div>
+      <h2>{data.Product.name}</h2>
+    </div>
+  );
 }
