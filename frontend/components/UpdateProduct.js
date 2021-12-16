@@ -1,7 +1,7 @@
-import gql from 'graphql-tag';
 import { useMutation, useQuery } from '@apollo/client';
-import DisplayError from './ErrorMessage';
+import gql from 'graphql-tag';
 import useForm from '../lib/useForm';
+import DisplayError from './ErrorMessage';
 import Form from './styles/Form.js';
 
 const SINGLE_PRODUCT_QUERY = gql`
@@ -24,7 +24,7 @@ const UPDATE_PRODUCT_MUTATION = gql`
   ) {
     updateProduct(
       id: $id
-      data: { id: $id, name: $name, description: $description, price: $price }
+      data: { name: $name, description: $description, price: $price }
     ) {
       id
       name
@@ -39,17 +39,11 @@ export default function UpdateProduct({ id }) {
   const { data, error, loading } = useQuery(SINGLE_PRODUCT_QUERY, {
     variables: { id },
   });
-  console.log(data);
   // 2. We need to get the mutation to update the product
   const [
     updateProduct,
     { data: updateData, error: updateError, loading: updateLoading },
-  ] = useMutation(UPDATE_PRODUCT_MUTATION, {
-    variables: {
-      id: id,
-      //   TO DO: Pass in updates to product here
-    },
-  });
+  ] = useMutation(UPDATE_PRODUCT_MUTATION);
   //   2.5. Create some state for the form inputs
   const { inputs, handleChange, resetForm, clearForm } = useForm(data?.Product);
   console.log(inputs);
@@ -59,6 +53,15 @@ export default function UpdateProduct({ id }) {
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
+        const res = await updateProduct({
+          variables: {
+            id: id,
+            name: inputs.name,
+            description: inputs.description,
+            price: inputs.price,
+          },
+        }).catch(console.error);
+        console.log(res);
         // Submit the input fields to the backend
         // TO DO: Handle Submit
         // const res = await createProduct();
