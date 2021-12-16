@@ -7,6 +7,7 @@ export default function useForm(initial = {}) {
 
   useEffect(() => {
     // This function runs when the things we are watching changes
+    setInputs(initial);
   }, [initialValues]);
 
   function handleChange(e) {
