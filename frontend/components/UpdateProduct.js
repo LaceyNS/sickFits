@@ -55,7 +55,7 @@ export default function UpdateProduct({ id }) {
         e.preventDefault();
         const res = await updateProduct({
           variables: {
-            id: id,
+            id,
             name: inputs.name,
             description: inputs.description,
             price: inputs.price,
