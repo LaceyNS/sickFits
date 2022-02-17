@@ -1,3 +1,5 @@
+import { PAGINATION_QUERY } from '../components/Pagination';
+
 export default function paginationField() {
   return {
     keyArgs: false, //tells Apollo we will take care of everything
@@ -5,7 +7,7 @@ export default function paginationField() {
       console.log({ existing, args, cache });
       const { skip, first } = args;
       //Read the number of items on the page from the cache
-
+      const data = cache.readQuery({ query: PAGINATION_QUERY });
       //First thing it does is ask the read function for those items
       //We can either do one of two things:
       //First thing we can do is return the items because they are already in the cache
