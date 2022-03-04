@@ -33,22 +33,24 @@ export default function SignUp() {
   async function handelSubmit(e) {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
-    const res = await signup();
+    const res = await signup().catch(console.error);
     console.log(res);
     console.log({ data, loading, error });
     resetForm();
     // Send the email and password to the graphqlAPI
   }
-  //   const error =
-  //     data?.authenticateUserWithPassword.__typename ===
-  //     'UserAuthenticationWithPasswordFailure'
-  //       ? data?.authenticateUserWithPassword
-  //       : undefined;
+
   return (
     <Form method="POST" onSubmit={handelSubmit}>
       <h2>Sign Up For an Account</h2>
       <Error error={error} />
       <fieldset>
+        {data?.createUser && (
+          <p>
+            Signed up with {data.createUser.email} - Please Go Ahead and Sign
+            In!
+          </p>
+        )}
         <label htmlFor="name">
           Your Name
           <input
@@ -82,7 +84,7 @@ export default function SignUp() {
             onChange={handleChange}
           />
         </label>
-        <button type="submit">Sign In!</button>
+        <button type="submit">Sign Up!</button>
       </fieldset>
     </Form>
   );
