@@ -4,33 +4,40 @@ import Form from './styles/Form';
 import useForm from '../lib/useForm';
 import Error from './ErrorMessage';
 
-const REQUEST_RESET_MUTATION = gql`
-  mutation REQUEST_RESET_MUTATION($email: String!) {
-    sendUserPasswordResetLink(email: $email) {
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $password: String!
+    $token: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
       code
       message
     }
   }
 `;
 
-export default function Reset() {
+export default function Reset({ token }) {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
     password: '',
-    token: '',
+    token,
   });
-  const [signup, { data, loading, error }] = useMutation(
-    REQUEST_RESET_MUTATION,
-    {
-      variables: inputs,
-      // refectch the currently logged in user
-      // refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    }
-  );
+  const [reset, { data, loading, error }] = useMutation(RESET_MUTATION, {
+    variables: inputs,
+  });
+  const successfulError = data?.redeemUserPasswordResetToken?.code
+    ? data?.redeemUserPasswordResetToken
+    : undefined;
+  console.log(error);
   async function handleSubmit(e) {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
-    const res = await signup().catch(console.error);
+    const res = await reset().catch(console.error);
     console.log(res);
     console.log({ data, loading, error });
     resetForm();
@@ -38,11 +45,11 @@ export default function Reset() {
   }
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Request a Password Reset</h2>
-      <Error error={error} />
+      <h2>Reset Your Password</h2>
+      <Error error={error || successfulError} />
       <fieldset>
-        {data?.sendUserPasswordResetLink === null && (
-          <p>Success! Check your email for a link!</p>
+        {data?.redeemUserPasswordResetToken === null && (
+          <p>Success! You can now sign in!</p>
         )}
 
         <label htmlFor="email">
