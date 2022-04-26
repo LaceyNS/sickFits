@@ -1,4 +1,5 @@
 import RequestReset from '../components/RequestReset';
+import Reset from '../components/Reset';
 
 export default function ResetPage({ query }) {
   if (!query?.token) {
@@ -12,6 +13,7 @@ export default function ResetPage({ query }) {
   return (
     <div>
       <p>RESET YOUR PASSWORD {query.token}</p>
+      <Reset />
     </div>
   );
 }
