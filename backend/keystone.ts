@@ -29,8 +29,8 @@ const { withAuth } = createAuth({
   passwordResetLink: {
     async sendToken(args) {
       console.log(args);
-    }
-  }
+    },
+  },
 });
 
 export default withAuth(

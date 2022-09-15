@@ -34,6 +34,7 @@ export default function Reset({ token }) {
     ? data?.redeemUserPasswordResetToken
     : undefined;
   console.log(error);
+  //   TODO: Add Frontend Form validation to prevent password length error and token wastage
   async function handleSubmit(e) {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
