@@ -120,5 +120,4 @@ export default function UpdateProduct({ id }) {
     </Form>
   );
 
-  return <p>Update {id}!</p>;
 }
