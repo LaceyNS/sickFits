@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 const LocalStateContext = createContext();
 const LocalStateProvider = LocalStateContext.Provider;
@@ -11,4 +11,11 @@ function CartStateProvider({ children }) {
     <LocalStateProvider value={{ cartOpen }}>{children}</LocalStateProvider>
   );
 }
-export { CartStateProvider };
+
+//make a custom hook for accessing the cart local state
+function useCart() {
+  //We use a consumer here to aceess the local state
+  const all = useContext(LocalStateContext);
+  return all;
+}
+export { CartStateProvider, useCart };
