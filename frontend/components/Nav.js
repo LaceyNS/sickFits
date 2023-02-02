@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import NavStyles from './styles/NavStyles';
-import SignOut from './SignOut';
-import { useUser } from './User';
 import { useCart } from '../lib/cartState';
 import CartCount from './CartCount';
+import SignOut from './SignOut';
+import NavStyles from './styles/NavStyles';
+import { useUser } from './User';
 
 export default function Nav() {
   const user = useUser();
@@ -28,7 +28,11 @@ export default function Nav() {
           </button>
         </>
       )}
-      {!user && <Link href="/signin">Sign In</Link>}
+      {!user && (
+        <>
+          <Link href="/signin">Sign In</Link>
+        </>
+      )}
     </NavStyles>
   );
 }
