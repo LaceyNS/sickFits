@@ -26,6 +26,13 @@ export default function RemoveFromCart({ id }) {
   const [RemoveFromCart, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
     variables: { id: id },
     update,
+    //this would give a fake update that mimics the cache.evict
+    // optimisticResponse: {
+    //   deleteCartItem: {
+    //     __typename: 'CartItem',
+    //     id,
+    //   },
+    // },
   });
   return (
     <BigButton
