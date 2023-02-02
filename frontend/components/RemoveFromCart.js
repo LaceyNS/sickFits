@@ -1,3 +1,5 @@
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
 import styled from 'styled-components';
 
 const BigButton = styled.button`
@@ -10,9 +12,28 @@ const BigButton = styled.button`
   }
 `;
 
+const REMOVE_FROM_CART_MUTATION = gql`
+  mutation REMOVE_FROM_CART_MUTATION($id: ID!) {
+    deleteCartItem(id: $id) {
+      id
+    }
+  }
+`;
+function update(cache, payload) {
+  cache.evict(cache.identify(payload.data.deleteCartItem));
+}
 export default function RemoveFromCart({ id }) {
+  const [RemoveFromCart, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
+    variables: { id: id },
+    update,
+  });
   return (
-    <BigButton type="button" title="Remove this item from Cart">
+    <BigButton
+      onClick={RemoveFromCart}
+      disabled={loading}
+      type="button"
+      title="Remove this item from Cart"
+    >
       &times;
     </BigButton>
   );
