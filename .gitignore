@@ -10,3 +10,4 @@ variables.env
 .keystone
 package-lock.json
 .vscode
+*.db
