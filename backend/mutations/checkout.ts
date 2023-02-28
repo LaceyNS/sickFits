@@ -1,3 +1,6 @@
+import { CartItem } from './../schemas/CartItem';
+import { Product } from './../schemas/Product';
+import { products } from './../seed-data/data';
 import { CartItemCreateInput } from './../.keystone/schema-types';
 import { OrderCreateInput } from '../.keystone/schema-types';
 /* eslint-disable */
@@ -61,8 +64,31 @@ async function checkout(
     });
     console.log(charge);
     //4. convert the cartItems to OrderItems
+    const orderItems = cartItems.map(cartItem => {
+        const orderItem = {
+            name: cartItem.product.name,
+            description: cartItem.product.description,
+            price: cartItem.product.price,
+            quantity: cartItem.quantity,
+            photo: { connect: { id: cartItem.product.photo.id}},
+        }
+        return orderItem;
+    })
     //5. create the order and return it
-  
+    const order = await context.lists.Order.createOne({
+        data: {
+            total: charge.amount,
+            charge: charge.id,
+            items: { create: orderItems },
+            user: { connect: { id: userId }}
+        }
+    })
+  //6. clean up any old cart items
+  const CartItemIds= cartItems.map(cartItem => cartItem.id);
+  await context.lists.CartItem.deleteMany({
+    ids: CartItemIds
+  });
+  return order;
 }
 
 export default checkout;
