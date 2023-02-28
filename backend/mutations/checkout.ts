@@ -2,6 +2,7 @@ import { CartItemCreateInput } from './../.keystone/schema-types';
 import { OrderCreateInput } from '../.keystone/schema-types';
 /* eslint-disable */
 import { KeystoneContext, SessionStore } from '@keystone-next/types';
+import stripeConfig from '../lib/stripe';
 
 const graphql = String.raw;
 
@@ -48,7 +49,17 @@ async function checkout(
         return tally + cartItem.quantity * cartItem.product.price;
     }, 0)
     console.log(amount);
-    //3. create the payment withthe stripe library
+    //3. create the charge withthe stripe library
+    const charge = await stripeConfig.paymentIntents.create({
+        amount,
+        currency: 'USD',
+        confirm: true,
+        payment_method: token,
+    }).catch(err => {
+        console.log(err);
+        throw new Error(err.message);
+    });
+    console.log(charge);
     //4. convert the cartItems to OrderItems
     //5. create the order and return it
   
