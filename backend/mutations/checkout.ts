@@ -64,7 +64,7 @@ async function checkout(
     });
     console.log(charge);
     //4. convert the cartItems to OrderItems
-    const orderItems = cartItems.map(cartItem => {
+    const orderItems = user.cart.map(cartItem => {
         const orderItem = {
             name: cartItem.product.name,
             description: cartItem.product.description,
