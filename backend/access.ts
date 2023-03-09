@@ -4,3 +4,12 @@ import { ListAccessArgs } from './types';
 export function isSignedIn({ session }: ListAccessArgs){
     return !!session;
 }
+
+export const permissions = {
+    ...generatedPermissions,
+    isAwesome({ session }: ListAccessArgs): boolean {
+        return session?.data.name.includes('Lacey');
+    },
+};
+
+//Rule based functions
