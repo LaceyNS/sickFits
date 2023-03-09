@@ -22,3 +22,17 @@ export const permissions = {
 };
 
 //Rule based functions
+//Rules can retun a boolean or a filter that limits which products they can CRUD
+
+export const rules = {
+    canManageProducts({session}: ListAccessArgs) {
+
+        //1. Do they have the permission of canManageProducts
+        if(permissions.canManageProducts({session})) {
+            return true;
+        }
+        //2. If not, do they own this item?
+        return { user: {id:session.itemId}};
+        
+    },
+};
