@@ -1,3 +1,4 @@
+import { permissionsList } from './schemas/fields';
 import { Role } from './schemas/Role';
 import { OrderItem } from './schemas/OrderItem';
 import { Order } from './schemas/Order';
@@ -77,7 +78,7 @@ export default withAuth(
     },
     session: withItemData(statelessSessions(sessionConfig), {
       // GraphQL query
-      User: 'id name email',
+      User: `id name email role {${permissionsList.join(' ')}}`,
     }),
   })
 );
