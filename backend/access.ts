@@ -25,7 +25,11 @@ export const permissions = {
 //Rules can retun a boolean or a filter that limits which products they can CRUD
 
 export const rules = {
-    canManageProducts({session}: ListAccessArgs) {
+    canManageProducts({session}: 
+        ListAccessArgs) {
+        if (!isSignedIn({session})) {
+            return false
+        }
 
         //1. Do they have the permission of canManageProducts
         if(permissions.canManageProducts({session})) {
@@ -48,7 +52,9 @@ export const rules = {
         
     },
     canManageOrderItems({session}: ListAccessArgs) {
-
+        if (!isSignedIn({session})) {
+            return false
+        }
         //1. Do they have the permission of canManageCart
         if(permissions.canManageCart({session})) {
             return true;
@@ -60,6 +66,9 @@ export const rules = {
 
 
     canReadProducts({session}: ListAccessArgs) {
+        if (!isSignedIn({session})) {
+            return false
+        }
         if(permissions.canManageProducts({session})) {
             return true //They can read everything
         }
