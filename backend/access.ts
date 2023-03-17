@@ -36,7 +36,9 @@ export const rules = {
         
     },
     canOrder({session}: ListAccessArgs) {
-
+        if (!isSignedIn({session})) {
+            return false
+        }
         //1. Do they have the permission of canManageCart
         if(permissions.canManageCart({session})) {
             return true;
