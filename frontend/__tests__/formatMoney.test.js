@@ -8,4 +8,10 @@ describe('format Money function', () => {
     expect(formatMoney(40)).toEqual('CA$0.40');
     expect(formatMoney(140)).toEqual('CA$1.40');
   });
+
+  it('leaves off cents when its whole dollars', () => {
+    expect(formatMoney(5000)).toEqual('CA$50');
+    expect(formatMoney(100)).toEqual('CA$1');
+    expect(formatMoney(50000000)).toEqual('CA$500,000');
+  });
 });
